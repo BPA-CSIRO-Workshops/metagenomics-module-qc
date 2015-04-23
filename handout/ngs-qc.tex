@@ -16,7 +16,7 @@
 
 After completing this practical the trainee should be able to:
 \begin{itemize}
-  \item Assess the overall quality of NGS sequence reads
+  \item Assess the overall quality of NGS (Illumina) sequence reads
   \item Visualise the quality, and other associated matrices, of reads to decide
         on filters and cutoffs for cleaning up data ready for downstream analysis
   \item Clean up and pre-process the sequences data for further analysis
@@ -66,14 +66,14 @@ rising in frequency at the 3' ends of reads.
 
 One way to investigate sequence data quality is to visualize the quality scores
 and other metrics in a compact manner to get an idea about the quality of a read
-data set. Read data sets can be improved by post processing in different ways
-like trimming off low quality bases, cleaning up any sequencing adapters and
-removing PCR duplicates. We can also look at other statistics such
+data set. Read data sets can be improved by pre processing in different ways
+like trimming off low quality bases, cleaning up any sequencing adapters,
+removing PCR duplicates and screening for contamination. We can also look at other statistics such
 as, sequence length distribution, base composition, sequence complexity,
 presence of ambiguous bases etc. to assess the overall quality of the data set.
 
 Highly redundant coverage ($>$15X) of the genome can be used to correct sequencing
-errors in the reads before assembly and errors. Various k-mer based error
+errors in the reads before assembly. Various k-mer based error
 correction methods exist but are beyond the scope of this tutorial.
 
 \subsection{Quality Value Encoding Schema}
@@ -119,7 +119,8 @@ directory on your desktop.
 \begin{steps}
 Open the Terminal and go to the directory where the data are stored:
 \begin{lstlisting}
-cd ~/qc
+ls
+cd qc
 pwd
 \end{lstlisting}
 
@@ -128,8 +129,9 @@ At any time, help can be displayed for FastQC using the following command:
 fastqc -h
 \end{lstlisting}
 
-\end{steps}
+Look at SYNOPSIS (Usage) and options after typing fastqc -h 
 
+\end{steps}
 
 \section{Quality Visualisation}
 
@@ -146,7 +148,7 @@ fastqc -f fastq good_example.fastq
 \end{lstlisting}
 
 View the FastQC report file of the bad data using a web browser such as
-firefox.
+firefox. The '\&' sign puts the job in the background.
 
 \begin{lstlisting}
 firefox bad_example_fastqc.html &
@@ -232,7 +234,7 @@ What is the quality score range you see?
 2-40
 \end{answer}
 
-At around which position do the scores start falling below Q20? 
+At around which position do the scores start falling below Q20 for the 25\% quartile range (25\%of reads below Q20)? 
 \begin{answer}
 Around 80 bp position
 \end{answer}
@@ -264,7 +266,7 @@ analysis projects sequence reads are aligned against the reference genome. The
 errors in the reads may lead to more mismatches than expected from
 mutations alone. But if these errors can be removed or corrected, the read
 alignments and hence the variant detection will improve. The assemblies will also
-improve after pre-processing the reads with errors.
+improve after pre-processing the reads to remove errors.
 \end{note}
 
 \section{Read Trimming}
@@ -279,7 +281,7 @@ you can use with this tool. Type \texttt{fastx\_trimmer -h} at anytime to displa
 
 \begin{steps}
 We will now do fixed-length trimming of the \texttt{bad\_example.fastq} file
-using the following command.
+using the following command. You should still be in the qc directory, if not cd back in.
 \begin{lstlisting}
 cd ~/qc
 fastx_trimmer -h
