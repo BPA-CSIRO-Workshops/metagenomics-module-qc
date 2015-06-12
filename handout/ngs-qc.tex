@@ -4,7 +4,7 @@
   Sonika Tyagi \mailto{sonika.tyagi@agrf.org.au}
 }
 \setModuleContributions{%
-  Nathan S. Watson-Haigh \mailto{nathan.haigh@acpfg.com.au}%
+  Nathan S. Watson-Haigh \mailto{nathan.haigh@acpfg.com.au}
   Zhiliang Chen \mailto{zhiliang.chen@unsw.edu.au}
   Paula Moolhuijzen \mailto{paula.moolhuijzen@curtin.edu.au}
 }
@@ -18,10 +18,10 @@
 
 After completing this practical the trainee should be able to:
 \begin{itemize}
-  \item Assess the overall quality of NGS (Illumina) sequence reads
+  \item Assess the overall quality of NGS (FastQ format) sequence reads
   \item Visualise the quality, and other associated matrices, of reads to decide
         on filters and cutoffs for cleaning up data ready for downstream analysis
-  \item Clean up and pre-process the sequences data for further analysis
+  \item Clean up adaptors and pre-process the sequence data for further analysis
 \end{itemize}
 
 \section{Resources You'll be Using}
@@ -30,7 +30,7 @@ After completing this practical the trainee should be able to:
 \begin{description}[style=multiline,labelindent=0cm,align=left,leftmargin=0.5cm]
   \item[FastQC]\hfill\\
   	\url{http://www.bioinformatics.babraham.ac.uk/projects/fastqc/}
-   \item[Skewer]
+  \item[Skewer]\hfill\\
    	\url{http://sourceforge.net/projects/skewer/}
   \item[FASTX-Toolkit]\hfill\\
  	\url{http://hannonlab.cshl.edu/fastx_toolkit/}
@@ -148,8 +148,6 @@ results in the form of a zipped and unzipped directory for each input file.
 \begin{steps}
 Execute the following command on the two files:
 \begin{lstlisting}
-%fastqc -f fastq bad_example.fastq 
-%fastqc -f fastq good_example.fastq
 fastqc -f qcdemo_R1.fastq.gz
 fastqc -f qcdemo_R2.fastq.gz
 \end{lstlisting}
@@ -158,7 +156,6 @@ View the FastQC report file of the bad data using a web browser such as
 firefox. The '\&' sign puts the job in the background.
 
 \begin{lstlisting}
-%firefox bad_example_fastqc.html &
 firefox qcdemo_R2_fastqc.html &
 \end{lstlisting}
 
@@ -174,17 +171,13 @@ for different quality statistics. E.g.:
   \caption{FastQC Basic Statistics table}
     \begin{tabular}{ll}
     \toprule
-    %Filename & bad\_example.fastq \\
     Filename & qcdemo\_R2.fastq.gz \\
     \midrule
     File type & Conventional base calls \\
     Encoding & Sanger / Illumina 1.9 \\
-    %Total Sequences & 40000 \\
     Total Sequences & 1000000 \\
     Filtered Sequences & 0 \\
-    %Sequence length & 100 \\
     Sequence length & 150 \\
-    %\%GC  & 48 \\
     \%GC  & 37 \\
     \bottomrule
     \end{tabular}
@@ -193,9 +186,7 @@ for different quality statistics. E.g.:
 
 \begin{figure}[H]
 \centering
-%\includegraphics[width=0.8\textwidth]{handout/bad_example.png}
-\includegraphics[width=0.8\textwidth]{handout/bad.qcdemo_R2.png}
-%\caption{Per base sequence quality plot for \texttt{bad\_example.fastq}.}
+\includegraphics[width=0.8\textwidth]{handout/bad_qcdemo_R2.png}
 \caption{Per base sequence quality plot for \texttt{qcdemo\_R2.fastq.gz}.}
 \label{fig:bad_example_untrimmed_plot}
 \end{figure}
@@ -234,7 +225,6 @@ with the following table:
 \begin{questions}
 How many sequences were there in your file? What is the read length?
 \begin{answer}
-%40,000. read length=100bp
 1,000,000. read length=150bp
 \end{answer}
 
@@ -251,10 +241,8 @@ What is the quality score range you see?
 
 At around which position do the scores start falling below Q20 for the 25\% quartile range (25\%of reads below Q20)? 
 \begin{answer}
-%Around 80 bp position
 Around 30 bp position
 \end{answer}
-
 
 How can we trim the reads to filter out the low quality data?
 \begin{answer}
@@ -290,80 +278,7 @@ Read trimming can be done in a variety of different ways. Choose a method
 which best suits your data. Here we are giving examples of fixed-length trimming
 and quality-based trimming.
 
-%\subsection{Fixed Length Trimming}
-%Low quality read ends can be trimmed using a fixed-length trimming. We will use the
-%\texttt{fastx\_trimmer} from the FASTX-Toolkit. Usage message to find out various options
-%you can use with this tool. Type \texttt{fastx\_trimmer -h} at anytime to display help.
-
-%\begin{steps}
-%We will now do fixed-length trimming of the \texttt{bad\_example.fastq} file
-%using the following command. You should still be in the qc directory, if not cd back in.
-%\begin{lstlisting}
-%cd ~/qc
-%fastx_trimmer -h
-%fastx_trimmer -Q 33 -f 1 -l 80 -i bad_example.fastq -o bad_example_trimmed01.fastq
-%\end{lstlisting}
-%\end{steps}
-
-%\begin{note}
-%We used the following options in the command above:
-%\begin{description}[style=multiline,labelindent=0cm,align=right,leftmargin=\descriptionlabelspace,rightmargin=1.5cm,font=\ttfamily]
-% \item[-Q 33] Indicates the input quality scores are Phred+33 encoded
-% \item[-f] First base to be retained in the output
-% \item[-l] Last base to be retained in the output
-% \item[-i] Input FASTQ file name
-% \item[-o] Output file name
-%\end{description}
-%\end{note}
-
-%\begin{steps}
-%Run FastQC on the trimmed file and visualise the quality scores of the trimmed file.
-%\begin{lstlisting}
-%fastqc -f fastq bad_example_trimmed01.fastq
-%firefox bad_example_trimmed01_fastqc.html &
-%\end{lstlisting}
-
-%The output should look like:
-%
-%\begin{table}[H]
-%  \centering
-%  \caption{FastQC Basic Statistics table}
-%    \begin{tabular}{ll}
-%    \toprule
-%    Filename & bad\_example\_trimmed01.fastq\\
-%    \midrule
-%     File type & Conventional base calls\\
-%     Encoding & Sanger / Illumina 1.9\\
-%     Total Sequences & 40000\\
-%     Filtered Sequences & 0\\
-%     Sequence length & 80\\
-%    \%GC & 48\\
-%    \bottomrule
-%    \end{tabular}
-%  \label{tab:badexampletrimmed}
-%\end{table}
-%
-%\begin{figure}[H]
-%\centering
-%\includegraphics[width=0.8\textwidth]{handout/bad_example_trimmed_to_80bp.png}
-%\caption{Per base sequence quality plot for the fixed-length trimmed \texttt{bad\_example.fastq} reads.}
-%\label{fig:bad_example_trimmed_plot}
-%\end{figure}
-%
-%\end{steps}
-%
-%\begin{questions}
-%What values would you use for \texttt{-f} if you wanted to trim off 10 bases at
-%the 5' end of the reads?
-%\begin{answer}
-%\texttt{-f 11}
-%\end{answer}
-%\end{questions}
-
 \subsection{Quality Based Trimming}
-%Base call quality scores can also be used to dynamically determine the trim
-%points for each read. A quality score threshold and minimum read length
-%following trimming can be used to remove low quality data.
 Base call quality scores can be used to dynamically determine the trim
 points for each read. A quality score threshold and minimum read length
 following trimming can be used to remove low quality data.
@@ -374,11 +289,9 @@ following trimming can be used to remove low quality data.
 The previous FastQC results show R1 is fine but R2 has low quality at the end. There is no adaptor contamination though.
 We will be using Skewer to perform the quality trimming.
 
-Run the following command to quality trim a set of paired end data. %your data:
+Run the following command to quality trim a set of paired end data.
 \begin{lstlisting}
 cd ~/qc
-%fastq_quality_trimmer -h
-%fastq_quality_trimmer -Q 33 -t 20 -l 50 -i bad_example.fastq -o bad_example_quality_trimmed.fastq
 skewer -t 20 -l 50  -q 30 -Q 25 -m pe qcdemo_R1.fastq.gz qcdemo_R2.fastq.gz
 \end{lstlisting}
 \end{steps}
@@ -386,16 +299,11 @@ skewer -t 20 -l 50  -q 30 -Q 25 -m pe qcdemo_R1.fastq.gz qcdemo_R2.fastq.gz
 
 \begin{note}
 \begin{description}[style=multiline,labelindent=0cm,align=right,leftmargin=\descriptionlabelspace,rightmargin=1.5cm,font=\ttfamily]
-% \item[-Q 33] Indicates the input quality scores are Phred+33 encoded
-% \item[-t] quality score cut-off
-% \item[-l] minimum length of reads to output
-% \item[-i] Input FASTQ file name
-% \item[-o] Output file name
-     \item[-t] number of threads to use
-     \item[-l] min length to keep after trimming
-     \item[-q] Quality threshold used for trimming at 3' end
-     \item[-Q] mean quality threshold for a read
-     \item[-m] pair-end mode
+\item[-t] number of threads to use
+\item[-l] min length to keep after trimming
+\item[-q] Quality threshold used for trimming at 3' end
+\item[-Q] mean quality threshold for a read
+\item[-m] pair-end mode
 \end{description}
 \end{note}
 
@@ -403,8 +311,6 @@ skewer -t 20 -l 50  -q 30 -Q 25 -m pe qcdemo_R1.fastq.gz qcdemo_R2.fastq.gz
 Run FastQC on the quality trimmed file and visualise the quality scores.
 
 \begin{lstlisting}
-%fastqc -f fastq bad_example_quality_trimmed.fastq
-%firefox bad_example_quality_trimmed_fastqc.html &
 fastqc -f fastq qcdemo_R1.fastq-trimmed-pair1.fastq
 fastqc -f fastq qcdemo_R1.fastq-trimmed-pair2.fastq
 firefox qcdemo_R1.fastq-trimmed-pair1_fastqc.html &
@@ -418,17 +324,13 @@ Let's look at the quality from the second reads. The output should look like:
   \caption{FastQC Basic Statistics table}
     \begin{tabular}{ll}
     \toprule
-    %Filename & bad\_example\_quality\_trimmed.fastq\\
     Filename & qcdemo\_R1.fastq-trimmed-pair2.fastq\\
     \midrule
     File type & Conventional base calls\\
     Encoding & Sanger / Illumina 1.9\\
-    %Total Sequences & 38976\\
     Total Sequences & 742262\\
     Filtered Sequences & 0\\
-    %Sequence length & 50-100\\
     Sequence length & 50-150\\
-    %\%GC & 48\\
     \%GC & 37\\
     \bottomrule
     \end{tabular}
@@ -437,9 +339,7 @@ Let's look at the quality from the second reads. The output should look like:
 
 \begin{figure}[H]
 \centering
-%\includegraphics[width=0.8\textwidth]{handout/bad_example_quality_trimmed.png}
-\includegraphics[width=0.8\textwidth]{handout/bad.qcdemo_R2_quality_trimmed.png}
-%\caption{Per base sequence quality plot for the quality-trimmed \texttt{bad\_example.fastq} reads.}
+\includegraphics[width=0.8\textwidth]{handout/bad_qcdemo_R2_quality_trimmed.png}
 \caption{Per base sequence quality plot for the quality-trimmed \texttt{qcdemo\_R2.fastq.gz} reads.}
 \label{fig:bad_example_quality_trimmed_plot}
 \end{figure}
@@ -447,20 +347,6 @@ Let's look at the quality from the second reads. The output should look like:
 \end{steps}
 
 \begin{questions}
-%How did the quality score range change with two types of trimming?
-%\begin{answer}
-%Some poor quality bases (Q $<$20) are still present at the 3' end of the
-%fixed-length trimmed reads. It also removes bases that are good quality.
-%
-%Quality-based trimming retains the 3' ends of reads which have good quality
-%scores.
-%\end{answer}
-%
-%Did the number of total reads change after two types of trimming?
-%\begin{answer}
-%Quality trimming discarded $>$1000 reads. However, We retain a lot of maximal
-%length reads which have good quality all the way to the ends.
-%\end{answer}
 
 Did the number of total reads in R1 and R2 change after trimming?
 \begin{answer}
@@ -507,8 +393,6 @@ sequence.
 
 \begin{lstlisting}
 cd ~/qc
-%fastx_clipper -h
-%fastx_clipper -v -Q 33 -l 20 -M 15 -a GATCGGAAGAGCGGTTCAGCAGGAATGCCGAG -i bad_example.fastq -o bad_example_clipped.fastq
 fastqc -f fastq  adaptorQC.fastq.gz
 skewer -x TGGAATTCTCGGGTGCCAAGGT -t 20 -l 10 -L 35 -q 30 adaptorQC.fastq.gz
 
@@ -517,21 +401,18 @@ skewer -x TGGAATTCTCGGGTGCCAAGGT -t 20 -l 10 -L 35 -q 30 adaptorQC.fastq.gz
 
 \begin{note}
 \begin{description}[style=multiline,labelindent=0cm,align=right,leftmargin=\descriptionlabelspace,rightmargin=1.5cm,font=\ttfamily]
-     \item[-x TGGAATTCTCGGGTGCCAAGGT] adaptor sequence used
-      \item[-t] number of threads to use
-     \item[-l] min length to keep after trimming
-     \item[-L] Max length to keep after trimming, in this experiment we were expecting only small RNA fragments
-     \item[-Q] Quality threshold used for trimming at 3' end. Use -m option to control the end you want to trim
+\item[-x] adaptor sequence used
+\item[-t] number of threads to use
+\item[-l] min length to keep after trimming
+\item[-L] Max length to keep after trimming, in this experiment we were expecting only small RNA fragments
+\item[-Q] Quality threshold used for trimming at 3' end. Use -m option to control the end you want to trim
 \end{description}
 \end{note}
-
 
 \begin{steps}
 Run FastQC on the adapter trimmed file and visualise the quality scores. Fastqc now shows adaptor free results.
 
 \begin{lstlisting}
-%fastqc -f fastq bad_example_quality_trimmed.fastq
-%firefox bad_example_quality_trimmed_fastqc.html &
 fastqc -f fastq adaptorQC.fastq-trimmed.fastq
 firefox adaptorQC.fastq-trimmed_fastqc.html &
 \end{lstlisting}
@@ -616,7 +497,6 @@ the 5' end of the reads?
 \end{answer}
 \end{questions}
 
-
 \subsection{Removing Duplicates}
 Duplicate reads are the ones having the same start and end coordinates. This
 may be the result of technical duplication (too many PCR cycles), or
@@ -655,7 +535,6 @@ SAM/BAM alignment format.
 Interested users can use the following general command to run the
 MarkDuplicates tool at their leisure. You only need to provide a BAM file for the
 INPUT argument (not provided):
-
 
 \begin{lstlisting}[style=command_syntax]
 cd ~/qc
