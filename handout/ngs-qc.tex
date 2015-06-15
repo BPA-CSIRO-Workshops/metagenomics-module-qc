@@ -385,7 +385,13 @@ molecules being sequenced. For example when sequencing miRNAs.
 \end{note}
 
 Various QC tools are available to screen and/or clip these adapter/primer
-sequences from your data. (e.g. FastQC, Skewer, cutadapt).
+sequences from your data. Apart from skewer which will be using today the 
+following two tools are also useful for trimming and removing adapter sequence.
+
+Cutadapt 
+\url{http://code.google.com/p/cutadapt/}
+Trimmomatic 
+\url{http://www.usadellab.org/cms/?page=trimmomatic}
 
 \begin{steps}
 Here we are demonstrating \texttt{Skewer} to trim a given adapter
@@ -519,6 +525,10 @@ files. For more information see the Picard website and information about the
 various command-line tools available:
 
 \url{http://picard.sourceforge.net/command-line-overview.shtml}
+
+A good list of tools for filtering PCR duplication can also be found at 
+\url{http://omictools.com/duplicate-reads-removal-c495-p1.html}
+
 \end{information}
 
 \begin{information}
