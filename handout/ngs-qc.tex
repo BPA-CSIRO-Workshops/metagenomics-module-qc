@@ -532,7 +532,7 @@ A good list of tools for filtering PCR duplication can also be found at
 \end{information}
 
 \begin{information}
-Picard is installed on this system in \texttt{/tools/Picard/picard-default}
+Picard is installed on this system in \texttt{/usr/share/java}
 
 One of the Picard tools (MarkDuplicates) can be used to analyse and remove
 duplicates from the raw sequence data. The input for Picard is a sorted
@@ -548,7 +548,7 @@ INPUT argument (not provided):
 
 \begin{lstlisting}[style=command_syntax]
 cd ~/qc
-java -jar /tools/Picard/picard-default/MarkDuplicates.jar INPUT=<alignment_file.bam> VALIDATION_STRINGENCY=LENIENT OUTPUT=alignment_file.dup METRICS_FILE=alignment_file.matric ASSUME_SORTED=true REMOVE_DUPLICATES=true
+java -jar /usr/share/java/MarkDuplicates.jar INPUT=<alignment_file.bam> VALIDATION_STRINGENCY=LENIENT OUTPUT=alignment_file.dup METRICS_FILE=alignment_file.matric ASSUME_SORTED=true REMOVE_DUPLICATES=true
 
 \end{lstlisting}
 \end{steps}
