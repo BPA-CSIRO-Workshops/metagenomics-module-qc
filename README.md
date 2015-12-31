@@ -1,6 +1,23 @@
 # btp-module-ngs-qc
 Bioinformatics Training Platform (BTP) Module: NGS Quality Control
 
+  * Topic
+    * NGS Quality Control
+  * Target Audience
+    * Biologists
+	* Non-bioinformaticians
+	* Little to no programming expereience
+  * Prerequisites
+    * None
+  * Key Learning Outcomes
+    * Assess the overall quality of NGS (FastQ format) sequence reads
+    * Visualise the quality, and other associated matrices, of reads to decide on filters and cutoffs for cleaning up data ready for downstream analysis
+    * Clean up adaptors and pre-process the sequence data for further analysis
+  * Time Required
+    * 
+  * Compute Requirements
+    * 
+
 License
 =======
 The contents of this repository are released under the Creative Commons
