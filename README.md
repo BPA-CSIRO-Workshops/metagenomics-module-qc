@@ -15,8 +15,6 @@ Bioinformatics Training Platform (BTP) Module: NGS Quality Control
     * Clean up adaptors and pre-process the sequence data for further analysis
   * Time Required
     * 2 hrs
-  * Compute Requirements
-    * 
 
 License
 =======
